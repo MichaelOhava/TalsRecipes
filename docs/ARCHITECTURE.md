@@ -30,4 +30,4 @@ GitHub Pages provides HTTPS, which is required for service workers and installab
 
 The web manifest declares an HTTP GET share target for `title`, `text`, and `url`. On GitHub Pages, the target is `/TalsRecipes/`; the app reads normal query parameters and hash parameters, finds a social URL in shared text, opens the import dialog, and starts link extraction automatically. Share payloads are stripped from the browser address bar after intake.
 
-iPhone sharing availability depends on the PWA being installed to the Home Screen and on the browser/provider exposing the share target. Instagram reels should normally arrive as a URL in `url` or as a URL embedded in `text`.
+iPhone sharing is not automatic. Safari/iOS does not expose the Web Share Target manifest entry as a third-party app share-sheet target in the way Android/Chromium does. The install guide provides an iPhone Shortcuts handoff that receives a URL, encodes it, and opens `/TalsRecipes/?url=ENCODED_URL`.

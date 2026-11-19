@@ -17,7 +17,26 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
 }) => {
   const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
   const [showIOSGuide, setShowIOSGuide] = useState(false);
+  const [shareGuideCopied, setShareGuideCopied] = useState(false);
   const t = getCopy(lang);
+
+  const copyIOSShareShortcut = async () => {
+    const setup = [
+      "1. In Apple's Shortcuts app, tap +.",
+      '2. Add "Get URLs from Input".',
+      '3. Add "URL Encode" and select the URL variable.',
+      '4. Add "Text" and enter: https://michaelohava.github.io/TalsRecipes/?url=',
+      '5. Add "Combine Text" to join the Text and Encoded URL.',
+      '6. Add "Open URLs" and select the Combined Text.',
+      '7. In shortcut details, name it "Tal\'s Recipes", enable "Show in Share Sheet", and accept URLs.',
+    ].join('\n');
+    try {
+      await navigator.clipboard.writeText(setup);
+      setShareGuideCopied(true);
+    } catch {
+      setShareGuideCopied(false);
+    }
+  };
 
   if (isInstalled && !alwaysShowGuideOption) {
     return null;
@@ -122,7 +141,27 @@ export const PWAInstallButton: React.FC<PWAInstallButtonProps> = ({
                     <span>{t.pwa.iosStep3Suffix}</span>
                   </div>
                 </li>
+                <li className="flex items-start gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-amber-50 dark:bg-amber-950/50 text-xs font-bold text-amber-700 dark:text-amber-300">
+                    4
+                  </span>
+                  <div className="pt-0.5">
+                    <strong>Add to Instagram&apos;s Share Sheet with Shortcuts:</strong>{' '}
+                    Create a shortcut named <strong>Tal&apos;s Recipes</strong> that receives URLs,
+                    URL-encodes the shared link, opens{' '}
+                    <code className="break-all text-xs">https://michaelohava.github.io/TalsRecipes/?url=ENCODED_URL</code>,
+                    and enable <strong>Show in Share Sheet</strong> in Shortcut Details.
+                  </div>
+                </li>
               </ol>
+
+              <button
+                type="button"
+                onClick={() => void copyIOSShareShortcut()}
+                className="mt-4 w-full min-h-[44px] rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 px-4 text-sm font-semibold text-slate-800 dark:text-slate-100"
+              >
+                {shareGuideCopied ? 'Shortcut setup copied' : 'Copy shortcut setup'}
+              </button>
 
               <button
                 type="button"

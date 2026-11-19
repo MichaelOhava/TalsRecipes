@@ -27,6 +27,8 @@ The workflow requires GitHub Pages to use **GitHub Actions** as its source. It n
 
 The app includes an installable web manifest, service worker, Apple touch icon, standalone display mode, and iOS-specific metadata. iOS storage and offline behavior are controlled by Safari and can be cleared from iPhone Settings.
 
-Once installed, share a link or reel from Instagram, TikTok, Facebook, YouTube, or another app by choosing **Tal's Recipes** from the system share sheet. The PWA opens the recipe extractor with the shared URL or text ready for extraction.
+Android/Chromium: once installed, supported links can appear as **Tal's Recipes** in the system share sheet through the Web Share Target manifest.
+
+iPhone/iPad: Safari does not currently register Web Share Target PWAs in third-party app share sheets. Create the iPhone Shortcuts workflow described in the install guide (the app will also explain the exact URL construction). The shortcut can receive an Instagram reel URL and open **Tal's Recipes** directly in the recipe extractor.
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the application and deployment design.
