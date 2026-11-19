@@ -1020,7 +1020,7 @@ export const ImportRecipeModal: React.FC<ImportRecipeModalProps> = ({
       aria-modal="true"
       aria-labelledby="import-recipe-title"
     >
-      <div className="w-full sm:max-w-2xl max-h-[92vh] flex flex-col rounded-t-3xl sm:rounded-2xl bg-white dark:bg-slate-900 border-t sm:border border-slate-200 dark:border-slate-800 shadow-2xl">
+      <div className="w-full sm:max-w-2xl max-h-[92dvh] sm:max-h-[92vh] flex flex-col rounded-t-3xl sm:rounded-2xl bg-white dark:bg-slate-900 border-t sm:border border-slate-200 dark:border-slate-800 shadow-2xl pb-safe">
         <div className="w-10 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mx-auto mt-3 sm:hidden" />
 
         <div className="flex items-center justify-between px-5 sm:px-6 pt-4 sm:pt-5 pb-4 border-b border-slate-100 dark:border-slate-800">

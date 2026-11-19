@@ -17,7 +17,7 @@ export default defineConfig(() => {
         registerType: 'autoUpdate',
         includeAssets: ['favicon.png', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png', 'pwa-maskable-512x512.png'],
         manifest: {
-          id: isGhPages ? './' : '/',
+          id: isGhPages ? '/TalsRecipes/' : '/',
           name: "Tal's Recipes",
           short_name: 'Tal Recipes',
           description: 'Save, search, and cook along with timestamped recipe videos from Instagram, TikTok, Facebook, and YouTube.',
@@ -25,10 +25,10 @@ export default defineConfig(() => {
           background_color: '#f5f6f8',
           display: 'standalone',
           orientation: 'portrait-primary',
-          start_url: isGhPages ? './' : '/',
-          scope: isGhPages ? './' : '/',
+          start_url: isGhPages ? '/TalsRecipes/' : '/',
+          scope: isGhPages ? '/TalsRecipes/' : '/',
           share_target: {
-            action: isGhPages ? './' : '/',
+            action: isGhPages ? '/TalsRecipes/' : '/',
             method: 'GET',
             params: {
               title: 'title',
@@ -59,6 +59,8 @@ export default defineConfig(() => {
         },
         workbox: {
           globPatterns: ['**/*.{js,css,html,ico,png,jpg,svg,woff,woff2}'],
+          navigateFallback: 'index.html',
+          navigateFallbackDenylist: [/^\/(?:manifest\.webmanifest|sw\.js|workbox-[^/]+\.js)(?:$|\?)/, /^\/TalsRecipes\/(?:manifest\.webmanifest|sw\.js|workbox-[^/]+\.js)(?:$|\?)/],
           maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
           runtimeCaching: [
             {

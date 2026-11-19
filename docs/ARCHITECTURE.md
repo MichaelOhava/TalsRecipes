@@ -25,3 +25,9 @@ GitHub Pages provides HTTPS, which is required for service workers and installab
 ## PWA lifecycle
 
 `registerSW({ immediate: true })` registers the generated service worker on startup. The service worker uses `autoUpdate`, so a newly deployed bundle can update the installed app without requiring an App Store release. Safari's Add to Home Screen flow uses the manifest and Apple metadata to launch the site in standalone mode.
+
+## Incoming share target
+
+The web manifest declares an HTTP GET share target for `title`, `text`, and `url`. On GitHub Pages, the target is `/TalsRecipes/`; the app reads normal query parameters and hash parameters, finds a social URL in shared text, opens the import dialog, and starts link extraction automatically. Share payloads are stripped from the browser address bar after intake.
+
+iPhone sharing availability depends on the PWA being installed to the Home Screen and on the browser/provider exposing the share target. Instagram reels should normally arrive as a URL in `url` or as a URL embedded in `text`.

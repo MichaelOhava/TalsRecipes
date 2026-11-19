@@ -50,6 +50,38 @@ export default function App() {
 
   const t = getCopy(lang);
 
+  const readIncomingShare = () => {
+    const params = new URLSearchParams(window.location.search);
+    let hashParams: URLSearchParams | null = null;
+
+    if (window.location.hash.startsWith('#')) {
+      hashParams = new URLSearchParams(window.location.hash.slice(1));
+    }
+
+    const sharedUrl = params.get('url') || hashParams?.get('url') || undefined;
+    const sharedText = params.get('text') || hashParams?.get('text') || undefined;
+    const sharedTitle = params.get('title') || hashParams?.get('title') || undefined;
+    const combinedText = [sharedTitle, sharedText].filter(Boolean).join(' ');
+    const urlInTextMatch = (sharedUrl || combinedText)
+      .match(/https?:\/\/[^\s<>"')\]}]+/i);
+    const incomingUrl = sharedUrl
+      ? sharedUrl
+      : urlInTextMatch
+        ? urlInTextMatch[0].replace(/[.,;!?]+$/, '')
+        : undefined;
+
+    if (incomingUrl || sharedText || sharedTitle) {
+      setSharedPayload({
+        url: incomingUrl,
+        text: sharedText,
+        title: sharedTitle,
+      });
+      setIsImportModalOpen(true);
+
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  };
+
   // Sync HTML dir/lang for native RTL Hebrew & LTR English
   useEffect(() => {
     const root = document.documentElement;
@@ -61,21 +93,13 @@ export default function App() {
 
   // Handle incoming PWA Share Target query parameters
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const sharedUrl = params.get('url') || undefined;
-    const sharedText = params.get('text') || undefined;
-    const sharedTitle = params.get('title') || undefined;
-
-    if (sharedUrl || sharedText || sharedTitle) {
-      const urlInTextMatch = !sharedUrl && sharedText ? sharedText.match(/https?:\/\/\S+/) : null;
-      setSharedPayload({
-        url: sharedUrl || (urlInTextMatch ? urlInTextMatch[0] : undefined),
-        text: sharedText,
-        title: sharedTitle,
-      });
-      setIsImportModalOpen(true);
-      window.history.replaceState({}, '', window.location.pathname);
-    }
+    readIncomingShare();
+    window.addEventListener('focus', readIncomingShare);
+    window.addEventListener('popstate', readIncomingShare);
+    return () => {
+      window.removeEventListener('focus', readIncomingShare);
+      window.removeEventListener('popstate', readIncomingShare);
+    };
   }, []);
 
   useEffect(() => {

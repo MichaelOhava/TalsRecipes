@@ -27,4 +27,6 @@ The workflow requires GitHub Pages to use **GitHub Actions** as its source. It n
 
 The app includes an installable web manifest, service worker, Apple touch icon, standalone display mode, and iOS-specific metadata. iOS storage and offline behavior are controlled by Safari and can be cleared from iPhone Settings.
 
+Once installed, share a link or reel from Instagram, TikTok, Facebook, YouTube, or another app by choosing **Tal's Recipes** from the system share sheet. The PWA opens the recipe extractor with the shared URL or text ready for extraction.
+
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the application and deployment design.

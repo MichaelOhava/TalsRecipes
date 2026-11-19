@@ -11,6 +11,21 @@
   html {
     font-family: var(--font-sans);
     -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    min-width: 320px;
+    overflow-x: hidden;
+    overscroll-behavior-y: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    touch-action: manipulation;
   }
 
   h1, h2, h3, h4, .font-display {
@@ -37,4 +52,16 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+@media (max-width: 639px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  main {
+    padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  }
 }
