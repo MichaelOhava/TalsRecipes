@@ -31,6 +31,7 @@ import {
   saveRecipes,
   saveTheme,
 } from './utils/storage';
+import { parseIncomingShare } from './utils/incomingShare';
 
 export default function App() {
   const [recipes, setRecipes] = useState<Recipe[]>(() => loadRecipes());
@@ -51,30 +52,12 @@ export default function App() {
   const t = getCopy(lang);
 
   const readIncomingShare = () => {
-    const params = new URLSearchParams(window.location.search);
-    let hashParams: URLSearchParams | null = null;
-
-    if (window.location.hash.startsWith('#')) {
-      hashParams = new URLSearchParams(window.location.hash.slice(1));
-    }
-
-    const sharedUrl = params.get('url') || hashParams?.get('url') || undefined;
-    const sharedText = params.get('text') || hashParams?.get('text') || undefined;
-    const sharedTitle = params.get('title') || hashParams?.get('title') || undefined;
-    const combinedText = [sharedTitle, sharedText].filter(Boolean).join(' ');
-    const urlInTextMatch = (sharedUrl || combinedText)
-      .match(/https?:\/\/[^\s<>"')\]}]+/i);
-    const incomingUrl = sharedUrl
-      ? sharedUrl
-      : urlInTextMatch
-        ? urlInTextMatch[0].replace(/[.,;!?]+$/, '')
-        : undefined;
-
-    if (incomingUrl || sharedText || sharedTitle) {
+    const incomingShare = parseIncomingShare(window.location.href);
+    if (incomingShare) {
       setSharedPayload({
-        url: incomingUrl,
-        text: sharedText,
-        title: sharedTitle,
+        url: incomingShare.url,
+        text: incomingShare.text,
+        title: incomingShare.title,
       });
       setIsImportModalOpen(true);
 

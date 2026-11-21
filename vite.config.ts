@@ -24,6 +24,7 @@ export default defineConfig(() => {
           theme_color: '#059669',
           background_color: '#f5f6f8',
           display: 'standalone',
+          prefer_related_applications: false,
           orientation: 'portrait-primary',
           start_url: isGhPages ? '/TalsRecipes/' : '/',
           scope: isGhPages ? '/TalsRecipes/' : '/',
