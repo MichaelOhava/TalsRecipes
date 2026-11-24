@@ -31,4 +31,6 @@ Android/Chromium: once installed, supported links can appear as **Tal's Recipes*
 
 iPhone/iPad: Safari does not currently register Web Share Target PWAs in third-party app share sheets. Create the iPhone Shortcuts workflow described in the install guide (the app will also explain the exact URL construction). The shortcut can receive an Instagram reel URL and open **Tal's Recipes** directly in the recipe extractor.
 
+Opening a supported shared link immediately saves a draft recipe to the local library and opens it in the extractor. Metadata/caption extraction can then fill in available details; press **Save Changes** to update the draft, or close the editor and find the draft in Discover. If the social service blocks metadata access, the source link remains saved and can be edited with a pasted caption or transcript.
+
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the application and deployment design.

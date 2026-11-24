@@ -28,6 +28,6 @@ GitHub Pages provides HTTPS, which is required for service workers and installab
 
 ## Incoming share target
 
-The web manifest declares an HTTP GET share target for `title`, `text`, and `url`. On GitHub Pages, the target is `/TalsRecipes/`; the app reads normal query parameters and hash parameters, finds a social URL in shared text, opens the import dialog, and starts link extraction automatically. Share payloads are stripped from the browser address bar after intake.
+The web manifest declares an HTTP GET share target for `title`, `text`, and `url`. On GitHub Pages, the target is `/TalsRecipes/`; the app reads normal query parameters and hash parameters, finds a social URL in shared text, immediately persists a draft to local storage, opens that draft in the import dialog, and starts link/caption extraction automatically. Saving edits updates the existing draft rather than creating a duplicate. Share payloads are stripped from the browser address bar after intake.
 
 iPhone sharing is not automatic. Safari/iOS does not expose the Web Share Target manifest entry as a third-party app share-sheet target in the way Android/Chromium does. The install guide provides an iPhone Shortcuts handoff that receives a URL, encodes it, and opens `/TalsRecipes/?url=ENCODED_URL`.

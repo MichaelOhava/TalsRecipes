@@ -724,8 +724,18 @@ export const ImportRecipeModal: React.FC<ImportRecipeModalProps> = ({
       setConfirmingDelete(false);
       lastAutoFetchedUrl.current = normalizeSocialUrl(editingRecipe.sourceUrl) || editingRecipe.sourceUrl;
       userPickedCustomThumb.current = Boolean(editingRecipe.coverImage);
-      titleEditedByUser.current = true;
-      videoTitleEditedByUser.current = Boolean(editingRecipe.videoTitle);
+      titleEditedByUser.current = !initialShared?.url;
+      videoTitleEditedByUser.current = !initialShared?.url && Boolean(editingRecipe.videoTitle);
+      if (initialShared?.text) {
+        setRawPasteText(initialShared.text);
+        rawPasteTextRef.current = initialShared.text;
+        applyParsedText(initialShared.text, {
+          overrideTitleIfEmpty: !initialShared.title,
+        });
+      }
+      if (initialShared?.url) {
+        void runLinkExtraction(initialShared.url, { forceThumbnail: true });
+      }
       return;
     }
 
@@ -1043,6 +1053,13 @@ export const ImportRecipeModal: React.FC<ImportRecipeModalProps> = ({
         </div>
 
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto px-5 sm:px-6 py-5 space-y-5">
+          {initialShared?.url && editingRecipe && (
+            <p className="rounded-xl border border-emerald-200 dark:border-emerald-800 bg-emerald-50 dark:bg-emerald-950/40 px-3.5 py-3 text-xs leading-relaxed text-emerald-800 dark:text-emerald-200">
+              {lang === 'he'
+                ? 'הקישור נשמר בספרייה כטיוטה. החילוץ מתבצע עכשיו; אפשר לסגור כדי לראות אותו או לשמור את הפרטים שחולצו.'
+                : 'The shared link is already saved in your recipe library as a draft. Extraction is running; close this dialog to see it, or save your extracted details when ready.'}
+            </p>
+          )}
           {/* Format templates (create mode) */}
           {!isEditing && (
             <div className="flex flex-wrap items-center gap-2">

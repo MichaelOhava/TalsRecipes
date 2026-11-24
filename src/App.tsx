@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Bookmark,
   Compass,
@@ -31,7 +31,8 @@ import {
   saveRecipes,
   saveTheme,
 } from './utils/storage';
-import { parseIncomingShare } from './utils/incomingShare';
+import { createIncomingShareDraft, parseIncomingShare } from './utils/incomingShare';
+import { normalizeSocialUrl } from './utils/socialExtractor';
 
 export default function App() {
   const [recipes, setRecipes] = useState<Recipe[]>(() => loadRecipes());
@@ -48,14 +49,29 @@ export default function App() {
   const [editingRecipe, setEditingRecipe] = useState<Recipe | null>(null);
   const [sharedPayload, setSharedPayload] = useState<SharedIncomingPayload | null>(null);
   const [collectionsResetCount, setCollectionsResetCount] = useState(0);
+  const recipesRef = useRef(recipes);
+  const langRef = useRef(lang);
+  recipesRef.current = recipes;
+  langRef.current = lang;
 
   const t = getCopy(lang);
 
   const readIncomingShare = () => {
     const incomingShare = parseIncomingShare(window.location.href);
     if (incomingShare) {
+      const sourceUrl = incomingShare.url ? normalizeSocialUrl(incomingShare.url) : undefined;
+      const sharedPayload = { ...incomingShare, url: sourceUrl };
+      const existingRecipe = sourceUrl
+        ? recipesRef.current.find((recipe) => normalizeSocialUrl(recipe.sourceUrl) === sourceUrl)
+        : undefined;
+      const draft = existingRecipe || createIncomingShareDraft(sharedPayload, langRef.current);
+
+      if (draft && !existingRecipe) {
+        setRecipes((current) => [draft, ...current]);
+      }
+      setEditingRecipe(draft);
       setSharedPayload({
-        url: incomingShare.url,
+        url: sourceUrl,
         text: incomingShare.text,
         title: incomingShare.title,
       });
